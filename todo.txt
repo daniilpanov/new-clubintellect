@@ -1,0 +1,6 @@
+TODO: Router as at Laravel
+TODO: Models as at Laravel
+TODO: Adapting controllers to new models
+TODO: Make views as at Yii
+TODO: Create translation of vars into views as at Yii
+TODO: Release user roles
