@@ -21,7 +21,7 @@ h4
     padding: 10px 0 10px 0;
 }
 
-#content
+main
 {
     position:relative;
     min-height:100%;
@@ -31,7 +31,7 @@ h4
     text-align: justify;
 }
 
-#content .empty
+main .empty
 {
     height:100px;
 }
@@ -123,7 +123,7 @@ h4
     font-style: italic;
 }
 
-#content-container
+main-container
 {
     float: left;
     width: 100%;
@@ -133,14 +133,14 @@ h4
 
 }
 
-#content-container2
+main-container2
 {
 
     margin: 0 auto;
     width: 940px;
 }
 
-#content-container3
+main-container3
 {
     padding: 20px;
     text-align: justify;
@@ -149,13 +149,13 @@ h4
     background: #fff;
 }
 
-#content-container3 a
+main-container3 a
 {
     text-decoration: none;
 }
 
 
-#content-container3 ul,li/* Списки */
+main-container3 ul,li/* Списки */
 {
     list-style-type: decimal;
     list-style-position: inside;
@@ -163,14 +163,14 @@ h4
     padding: 0;
 }
 
-#content-container3 span a
+main-container3 span a
 {
     color: #000;
 }
 
 #aside h3 { margin: 0; }
 
-#footer-container
+footer
 {
     position:relative;
     margin-top:-90px;
@@ -182,7 +182,7 @@ h4
     border-top:1px solid #444
 }
 
-#footer
+footer #footer
 {
     margin: 0 auto;
     width: 900px;

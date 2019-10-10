@@ -56,7 +56,7 @@ class Db extends Config
     }
 
     // реализация запроса к БД
-    public function sql(string $query, array $params = NULL, bool $emulate = TRUE)
+    public function sql(string $query, array $params = NULL, bool $emulate = true)
     {
         //echo $query;
         try
