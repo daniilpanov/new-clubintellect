@@ -11,4 +11,9 @@ class Language extends Model
     public $language;
     public $status;
     public $is_main;
+
+    public function __construct($lng)
+    {
+        $this->abbr = $lng;
+    }
 }

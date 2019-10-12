@@ -4,7 +4,7 @@
 namespace admin\app\controllers;
 
 
-class Post extends Controller
+class Post extends ActionController
 {
 
 }

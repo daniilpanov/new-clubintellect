@@ -41,49 +41,50 @@
 <!---->
 <body>
 <?php
-
-use admin\app\controllers\Router;
-use admin\app\Factory;
-
+// Инициализируем сессии
 session_start();
 
-if (!isset($_SESSION['loged_login']))
+// Автозагрузка классов
+spl_autoload_register(function ($name)
 {
-    require_once "views/vlogin.php";
-}
-else
-{
-    // Автозагрузка классов
-    spl_autoload_register(function ($name)
-    {
-        // конвертируем полный путь в пространстве имён с \ в /
-        $name = str_replace('\\', '/', $name);
+    $name = str_replace("admin\\", "", $name);
+    // конвертируем полный путь в пространстве имён с \ в /
+    $name = str_replace('\\', '/', $name);
 
-        require_once($name.'.php');
-    });
+    require_once($name.'.php');
+});
 
-    // Подключаем скрипт с функциями
-    require_once "lib/functions.php";
+use admin\app\{Factory, models\View};
 
-    // создадим основной обьект настроек
-    $site_ini = Factory::getController("Csettings");
+// Настраиваем фабрику и модели видов
+Factory::$root_namespace = "admin\\app\\";
+View::$path_to_views = "views" . DIRECTORY_SEPARATOR . "new_views" . DIRECTORY_SEPARATOR;
 
-    // подключаем файл со статическими языковыми константами сайта
-    $lng = $site_ini->return_settings("ru");
-    require_once '../language/russian.php';
+// Подключаем скрипт с функциями
+require_once "lib/functions.php";
+// и скрипт с инициализацией роутинга
+require_once "routing-ini.php";
 
-    echo "<header>";
-    require_once 'header.php';
-    echo "</header>";
+// создадим основной обьект настроек
+/*$site_ini = Factory::getController("Csettings");
 
-    echo "<main class='container'>";
-    require_once 'body.php';
-    echo "</main>";
+// подключаем файл со статическими языковыми константами сайта
+$lng = $site_ini->return_settings("ru");*/
+require_once '../language/russian.php';
 
-    echo "<footer>";
-    require_once 'footer.php';
-    echo "</footer>";
-}
+// Фронтенд сайта:
+// заголовок (название, меню и др.)
+echo "<header>";
+require_once 'header.php';
+echo "</header>";
+// контент (виды)
+echo "<main class='container'>";
+require_once 'body.php';
+echo "</main>";
+// и подвал (копирайт, разработчики и др.)
+echo "<footer>";
+require_once 'footer.php';
+echo "</footer>";
 
 ?>
 </body>

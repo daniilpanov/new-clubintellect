@@ -4,6 +4,7 @@ namespace admin\app\controllers;
 
 
 use admin\app\Factory;
+use admin\app\models\Routing;
 
 class Router extends Controller
 {
@@ -14,7 +15,7 @@ class Router extends Controller
         PATH_REQUEST = "A",
         URL_REQUEST = "R";
 
-    private $patterns = [];
+    private $requests = [];
 
     public $default_namespace = "";
     public $default_controller = "";
@@ -23,29 +24,30 @@ class Router extends Controller
     {
     }
 
-    public function get($get_pattern, $controller, $method = null, $use_default_namespace = true): bool
+    public function get($controller = null, $use_default_namespace = true): Routing
     {
-        return $this->request(self::GET_REQUEST, $get_pattern, $controller, $method, $use_default_namespace);
+        return $this->request(self::GET_REQUEST, $controller, $use_default_namespace);
     }
 
-    public function post($post_pattern, $controller = null, $method = null, $use_default_namespace = true): bool
+    public function post($controller = null, $use_default_namespace = true): Routing
     {
-        return $this->request(self::POST_REQUEST, $post_pattern, $controller, $method, $use_default_namespace);
+        return $this->request(self::POST_REQUEST, $controller, $use_default_namespace);
     }
 
-    public function request($type, $pattern, $controller = null, $method = null, $use_default_namespace = true): bool
+    private function request($type, $controller = null, $use_default_namespace = true): Routing
     {
         if ($controller === null)
             $controller = $this->default_controller;
+        $full_controller_namespace
+            = ($use_default_namespace)
+                ? $this->default_namespace . $controller
+                : $controller;
 
-        if ($use_default_namespace)
-            $controller = $this->default_namespace . $controller;
-
-        if (!class_exists($controller))
-            return false;
-
-        $this->patterns[$type][$controller] = ['pattern' => $pattern, 'method' => $method];
-        return true;
+        return $this->requests[$type][]
+            = Factory::createModel(
+                "Routing", null,
+                false, $full_controller_namespace
+        );
     }
 
     /**
@@ -54,38 +56,33 @@ class Router extends Controller
      */
     public function route($requests): array
     {
-        $data = [];
+        $responses = [];
 
-        foreach ($requests as $type => $request)
-            $data[$type] = $this->request_check($type, $request);
-
-        return $data;
-    }
-
-    private function request_check($type, $data)
-    {
-        $result = null;
-
-        foreach ($data as $key => $request)
+        foreach ($this->requests as $type => $request_models)
         {
-            $full_req = ($request !== null) ? $key . "=" . $request : $key;
-
-            foreach ($this->patterns[$type] as $controller => $pattern)
+            foreach ($request_models as $request_model)
             {
-                if (preg_match($pattern['pattern'], $full_req, $params))
+                foreach ($requests[$type] as $request)
                 {
-                    unset($params[0]);
-                    $control = Factory::getController($controller);
-                    $method = $pattern['method'];
-
-                    $result[$full_req] =
-                        ($method != null)
-                            ? $control->$method(...$params)
-                            : $control(...$params);
+                    if ($res = $request_model->init(['key' => $request['key'], 'value' => $request['value']]))
+                    {
+                        $responses[$type][] = $res;
+                    }
                 }
             }
         }
 
-        return $result;
+        /*foreach ($this->waiting as $item)
+        {
+            foreach ($item as $item2)
+            {
+                if (!$item2['required'])
+                {
+
+                }
+            }
+        }*/
+
+        return $responses;
     }
 }

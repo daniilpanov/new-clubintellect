@@ -23,17 +23,10 @@ h4
 
 main
 {
-    position:relative;
-    min-height:100%;
-    height:auto !important;
+    height: auto !important;
 
     color: #002200;
     text-align: justify;
-}
-
-main .empty
-{
-    height:100px;
 }
 
 #head-container/*подложка*/
@@ -123,7 +116,7 @@ main .empty
     font-style: italic;
 }
 
-main-container
+#content-container
 {
     float: left;
     width: 100%;
@@ -133,14 +126,13 @@ main-container
 
 }
 
-main-container2
+#content-container2
 {
-
     margin: 0 auto;
     width: 940px;
 }
 
-main-container3
+#content-container3
 {
     padding: 20px;
     text-align: justify;
@@ -149,13 +141,13 @@ main-container3
     background: #fff;
 }
 
-main-container3 a
+#content-container3 a
 {
     text-decoration: none;
 }
 
 
-main-container3 ul,li/* Списки */
+#content-container3 ul,li/* Списки */
 {
     list-style-type: decimal;
     list-style-position: inside;
@@ -163,7 +155,7 @@ main-container3 ul,li/* Списки */
     padding: 0;
 }
 
-main-container3 span a
+#content-container3 span a
 {
     color: #000;
 }
@@ -172,14 +164,13 @@ main-container3 span a
 
 footer
 {
-    position:relative;
-    margin-top:-90px;
-    height: 90px;
-    width:100%;
+    position: absolute;
+    bottom: 40px;
+    width: 100%;
     clear: left;
     color: #000;
     background: #fff;
-    border-top:1px solid #444
+    border-top: 1px solid #444
 }
 
 footer #footer
@@ -187,8 +178,8 @@ footer #footer
     margin: 0 auto;
     width: 900px;
     text-align: center;
-    padding-top: 35px;
     height: 20px;
+    padding: 25px;
 }
 
 table

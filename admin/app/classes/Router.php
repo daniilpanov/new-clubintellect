@@ -57,8 +57,6 @@ class Router
                         // Удаление меню
                         case "menudelete":
                             self::$all_menus->del_menu($get['id']);
-
-                            // TODO: create redirect to "index.php?page=menulist"!
                             require_once "views/vmenulist.php";
                             break;
 
