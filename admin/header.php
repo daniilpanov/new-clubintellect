@@ -27,11 +27,10 @@
 
         <div id="date">
             <?php
-
-            use app\classes\SuperDate;
-
-            $day = new SuperDate();
-            echo $day->getSuperFormattedTime();
+            $timezone = "Europe/Moscow";
+            /** @var \admin\app\models\SuperDate $day */
+            $day = \admin\app\Factory::createModelIfNotExists("SuperDate", ['timezone' => $timezone], [$timezone]);
+            echo $day->getSuperFormattedTime() . "\n";
             ?>
         </div><!--date-->
 

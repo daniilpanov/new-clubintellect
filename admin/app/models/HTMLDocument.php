@@ -35,14 +35,14 @@ class HTMLDocument extends Model
         $attrs = [];
         //
         if ($name !== null)
-            $tag['attr']['name'] = $name;
+            $attrs['name'] = $name;
         if ($content !== null)
-            $tag['attr']['content'] = $content;
+            $attrs['content'] = $content;
         if ($http_equiv !== null)
-            $tag['attr']['http-equiv'] = $http_equiv;
+            $attrs['http-equiv'] = $http_equiv;
         if ($charset !== null)
             $attrs['charset'] = $charset;
-        
+
         //
         $tag = ['name' => "link", 'root' => $this->root_tag, 'attr' => $attrs, 'closed' => false];
         $this->tags[] = $tag;
@@ -56,7 +56,7 @@ class HTMLDocument extends Model
         $tag = ['name' => "link", 'root' => $this->root_tag, 'attr' => $another_attr, 'closed' => false];
         
         if ($rel !== null)
-            $tag['attr']['rel'] = $type;
+            $tag['attr']['rel'] = $rel;
         if ($type !== null)
             $tag['attr']['type'] = $type;
         if ($media !== null)
@@ -131,7 +131,7 @@ class HTMLDocument extends Model
     
     public function header($content, $class = null, $id = null)
     {
-        $tag = ['name' => "header", 'root' => $this->root_tag, 'content' => $content];
+        $tag = ['name' => "header", 'root' => $this->root_tag, 'content' => $content, 'closed' => true];
         if ($class !== null)
             $tag['attr']['class'] = $class;
         if ($id !== null)
@@ -143,7 +143,7 @@ class HTMLDocument extends Model
 
     public function main($content, $class = null, $id = null)
     {
-        $tag = ['name' => "main", 'root' => $this->root_tag, 'content' => $content];
+        $tag = ['name' => "main", 'root' => $this->root_tag, 'content' => $content, 'closed' => true];
         if ($class !== null)
             $tag['attr']['class'] = $class;
         if ($id !== null)
@@ -155,7 +155,7 @@ class HTMLDocument extends Model
 
     public function footer($content, $class = null, $id = null)
     {
-        $tag = ['name' => "footer", 'root' => $this->root_tag, 'content' => $content];
+        $tag = ['name' => "footer", 'root' => $this->root_tag, 'content' => $content, 'closed' => true];
         if ($class !== null)
             $tag['attr']['class'] = $class;
         if ($id !== null)
@@ -175,28 +175,37 @@ class HTMLDocument extends Model
     {
         echo "<!doctype html>\n<html lang='{$this->lang}'>";
         $current_root_tag = "html";
+        $title_init = false;
 
         foreach ($this->tags as $tag)
         {
             if ($tag['root'] !== $current_root_tag)
             {
-                echo "</$current_root_tag>\n";
-                echo "<{$tag['root']}>";
+                if ($current_root_tag !== "html")
+                    echo "</$current_root_tag>\n";
+                echo "\n<{$tag['root']}>\n";
+                $current_root_tag = $tag['root'];
+            }
+
+            if ($current_root_tag == "head" && !$title_init)
+            {
+                echo "\t<title>" . $this->title . "</title>\n";
+                $title_init = true;
             }
 
             $attrs = $this->arrayToString($tag['attr']);
-            echo "\t<{$tag['name']} $attrs>";
+            echo "\t<{$tag['name']}$attrs>\n";
 
             if (isset($tag['content']) && is_callable($content = $tag['content']))
                 $content();
-            else
+            elseif (isset($tag['content']))
                 echo $content;
-
-            echo "</{$tag['name']}>";
+            if ($tag['closed'])
+                echo "\t</{$tag['name']}>\n";
         }
 
         if ($current_root_tag !== "html")
-            echo "</$current_root_tag>";
+            echo "</$current_root_tag>\n";
         echo "</html>";
     }
 

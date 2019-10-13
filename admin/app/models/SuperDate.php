@@ -1,8 +1,13 @@
 <?php
+
+
 namespace admin\app\models;
+
 
 class SuperDate extends \DateTime
 {
+    public $timezone;
+
     private $month = array(
         1 => "января",
         2 => "февраля",
@@ -30,7 +35,7 @@ class SuperDate extends \DateTime
                 
     public function __construct($timezone = null)
     {
-        parent::__construct('now', $timezone);
+        parent::__construct('now', new \DateTimeZone($timezone));
     }
 
     public function getSuperFormattedTime()

@@ -5,24 +5,26 @@ namespace admin\app\controllers;
 
 
 use admin\app\Factory;
+use admin\app\models\HTMLDocument;
 
 class HTMLHelper extends Controller
 {
     private $html_model = null;
 
-    public function begin()
+    public function begin($title, $lng): self
     {
-        Factory::createModel("HTMLDocument", null, false, "title", "ru");
+        $this->html_model = Factory::createModel("HTMLDocument", null, false, $title, $lng);
+        return $this;
     }
 
-    public function head()
+    public function head(): HTMLDocument
     {
         return $this->html_model->createHead();
     }
 
-    public function body()
+    public function body(): HTMLDocument
     {
-        $this->html_model->renderHead()->createBody();
+        return $this->html_model->renderHead()->createBody();
     }
 
     public function end()

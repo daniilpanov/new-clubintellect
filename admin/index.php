@@ -1,45 +1,3 @@
-<!doctype html>
-<html lang="ru">
-<!---->
-<head>
-    <!--Meta-->
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="Author" content="Клуб интеллектуалов">
-    <!--End Meta-->
-
-    <title>Система управления сайтом</title>
-
-    <!--CSS-->
-    <link href="style/bootstrap.min.css" rel="stylesheet" media="screen">
-    <link href="style/style.css" rel="stylesheet">
-    <link href="style/jquery.lightbox-0.5.css" rel="stylesheet">
-    <!--End CSS-->
-
-    <!--Fonts-->
-    <link href='http://fonts.googleapis.com/css?family=Marck+Script&subset=latin,cyrillic' rel='stylesheet' type='text/css'>
-    <link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet">
-    <!--End Fonts-->
-
-    <!--Favicon-->
-    <link rel="shortcut icon" href="../favicon.ico" />
-    <!--End Favicon-->
-
-    <!--Java scripts-->
-    <script type="text/javascript" src="js/jquery/jquery-1.7.2.js"></script>
-    <script type="text/javascript" src="js/jquery/jquery.lightbox-0.5.js"></script>
-    <script type="text/javascript" src="js/ckeditor/ckeditor.js"></script>
-    <script type="text/javascript" src="js/Djenx.Explorer/djenx-explorer.js"></script>
-    <!--End Java scripts-->
-
-    <!--bootstrap-->
-    <script src="js/bootstrap/bootstrap.min.js"></script>
-    <!--End Bootstrap-->
-</head>
-
-<!---->
-<body>
 <?php
 // Инициализируем сессии
 session_start();
@@ -72,20 +30,35 @@ require_once "routing-ini.php";
 $lng = $site_ini->return_settings("ru");*/
 require_once '../language/russian.php';
 
-// Фронтенд сайта:
-// заголовок (название, меню и др.)
-echo "<header>";
-require_once 'header.php';
-echo "</header>";
-// контент (виды)
-echo "<main class='container'>";
-require_once 'body.php';
-echo "</main>";
-// и подвал (копирайт, разработчики и др.)
-echo "<footer>";
-require_once 'footer.php';
-echo "</footer>";
-
-?>
-</body>
-</html>
+// Фронтенд:
+// получаем HTML-helper
+/** @var \admin\app\controllers\HTMLHelper $html_helper */
+$html_helper = Factory::getController("HTMLHelper");
+// начинаем формировать тег <head>
+$html_helper->begin("Система управления сайтом", "ru") // начало самого документа
+    ->head()->meta(null, null, null, "utf-8") // кодировка
+    ->meta(null, "IE=edge", "X-UA-Compatible")
+    ->meta("viewport", "width=device-width, initial-scale=1")
+    ->meta("Author", "Клуб интеллектуалов")
+    // стили
+    ->link("style/style.css", "stylesheet")
+    ->link("style/bootstrap.min.css", "stylesheet", null, "screen")
+    ->link("style/jquery.lightbox-0.5.css", "stylesheet", null, "screen");
+// формируем <body>
+$html_helper->body()->header(function ()
+    {
+        //
+        require_once 'header.php';
+    })
+    ->main(function ()
+    {
+        //
+        require_once 'body.php';
+    }, "container")
+    ->footer(function ()
+    {
+        //
+        require_once 'footer.php';
+    });
+// заканчиваем документ
+$html_helper->end();

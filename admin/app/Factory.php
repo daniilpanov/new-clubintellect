@@ -65,6 +65,17 @@ class Factory
         return $needle_models[] = new $namespace(...$params);
     }
 
+    public static function createModelIfNotExists($name, $search_params, $creating_params = null, $group = null, $save = true)
+    {
+        if ($creating_params === null)
+            $creating_params = $search_params;
+
+        if (!$model = self::searchModelInGroup($name, $group, $search_params))
+            $model = self::createModelArr($name, $creating_params, $group, $save);
+
+        return $model;
+    }
+
     public static function createModel($name, $group = null, $save = true, ...$params)
     {
         return self::createModelArr($name, $params, $group, $save);
