@@ -64,7 +64,8 @@ class Router extends Controller
             {
                 foreach ($requests[$type] as $request)
                 {
-                    if ($res = $request_model->init(['key' => $request['key'], 'value' => $request['value']]))
+                    $value = (isset($request['value']) ? $request['value'] : null);
+                    if ($res = $request_model->init(['key' => $request['key'], 'value' => $value]))
                     {
                         $responses[$type][] = $res;
                     }

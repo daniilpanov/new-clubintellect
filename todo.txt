@@ -1,3 +1,4 @@
+TODO: Add link of Bootstrap & JQuery [hot]
 TODO: Models as at Laravel [in progress]
 TODO: Adapting controllers to new models [in progress]
 TODO: Make views as at Yii [in progress]

@@ -101,6 +101,9 @@ class Factory
         $control_sum = count($params);
         $found_models = [];
 
+        if (!isset(self::$models[$group][$name]))
+            return null;
+
         foreach (self::$models[$group][$name] as $object)
         {
             $counter = 0;

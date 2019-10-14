@@ -24,7 +24,10 @@ class Site extends ActionController
             Factory::getController("Render")
                 ->render(
                     "page-list",
-                    ['pages' => Factory::createModelGroup("Page", "ru")]
+                    ['pages' => Factory::createModelGroup(
+                        "Page", "ru",
+                        "id, name, visible_at"
+                    )]
                 );
         }
         elseif ($switch == "edit")

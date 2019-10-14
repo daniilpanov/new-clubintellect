@@ -8,41 +8,54 @@ use admin\app\models\Db\Query;
 
 class Page extends Model
 {
-    // TODO: change properties to valid
     public $id;
-    public $parent_id;
+    public $name;
+    public $title;
+    public $parent_page;
+    public $position;
     public $description;
     public $keywords;
-    public $title;
-    public $menu_icon;
-    public $icon_size;
-    public $menu_number;
-    public $menu_name;
-    public $position;
+    public $icon;
+    public $menu_id;
     public $content;
     public $language;
     public $created;
-    public $lastmod;
-    public $visible_in_main_menu;
-    public $visible_in_sidebar;
-    public $active_link_in_sidebar;
-    public $reviews_visible;
-    public $reviews_add;
-    public $contacts_visible;
-    public $contacts_files_attach;
+    public $last_mod;
+    public $visible;
+    public $is_link;
+    public $reviews;
+    public $contacts;
 
     public function __construct($id, $select = "*")
     {
         $this->id = $id;
 
-        $sql = Query::select("pages")->what($select)->where("id", $id)->getSql();
+        $sql = Query::select("pages")->what($select)->where("id", $id)->order("position")->getSql();
 
         $this->init($sql);
-        echo "<br>";
     }
 
-    public static function initGroup($lng, $select = "*")
+    public static function initGroup($lng, $select = "*", $visible = null, $menu = "all")
     {
-        return self::initSome(Query::select("pages")->what($select)->where("language", $lng)->getSql());
+        $sql = Query::select("pages")->what($select)->where("language", $lng)->order("position");
+
+        if ($visible !== null)
+        {
+            $sql->wAnd("visible", ($visible) ? "1" : "0");
+        }
+
+        if ($menu && $menu !== "all")
+        {
+            if ($menu == "top")
+            {
+               $sql->wAnd("visible_in_main_menu", "1");
+            }
+            elseif ($menu == "sidebar")
+            {
+                $sql->wAnd("visible_in_sidebar", "1");
+            }
+        }
+
+        return self::initSome($sql->getSql());
     }
 }

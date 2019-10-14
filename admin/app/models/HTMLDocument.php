@@ -193,7 +193,8 @@ class HTMLDocument extends Model
                 $title_init = true;
             }
 
-            $attrs = $this->arrayToString($tag['attr']);
+            $attrs = (isset($tag['attr']) ? $this->arrayToString($tag['attr']) : "");
+
             echo "\t<{$tag['name']}$attrs>\n";
 
             if (isset($tag['content']) && is_callable($content = $tag['content']))
