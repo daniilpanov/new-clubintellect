@@ -3,3 +3,5 @@ admin/app/classes/Config.php
 app/classes/Config.php
 logs.txt
 .htaccess
+cache/
+!cache/keep-cache.php

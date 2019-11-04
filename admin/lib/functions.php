@@ -8,8 +8,8 @@ function createLanguageSwitcher($page)
 {
     ?>
     <!-- Language Switcher -->
-    <a href="?page=<?=$page?>&lng=ru"><img title="русская версия сайта" alt="ru" src="../upload/images/ru.png"></a>
-    <a href="?page=<?=$page?>&lng=en"><img title="английская версия сайта" alt="en" src="../upload/images/en.png"></a>
+    <a href="?page=<?=$page?>&lng=ru"><?=lngSign("ru")?></a>
+    <a href="?page=<?=$page?>&lng=en"><?=lngSign("en")?></a>
     <?php
 }
 
@@ -38,4 +38,22 @@ function getCurrentLng()
     }
 
     return "ru";
+}
+
+function lngSign($lng)
+{
+    $version = "";
+
+    switch ($lng)
+    {
+        case "ru":
+            $version = "русская";
+            break;
+
+        case "en":
+            $version = "английская";
+            break;
+    }
+
+    return "<img title='$version версия сайта' alt='$lng' src='../upload/images/$lng.png'>";
 }

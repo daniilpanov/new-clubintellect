@@ -33,9 +33,9 @@ class SuperDate extends \DateTime
         6 => "суббота"
     );
                 
-    public function __construct($timezone = null)
+    public function __construct($timezone = null, $time = null)
     {
-        parent::__construct('now', new \DateTimeZone($timezone));
+        parent::__construct(($time ? $time : 'now'), new \DateTimeZone($timezone));
     }
 
     public function getSuperFormattedTime()
@@ -44,5 +44,15 @@ class SuperDate extends \DateTime
             . $this->month[$this->format("n")] . " "
             . $this->format("Y") . " года, "
             . $this->day[$this->format("w")];
+    }
+
+    public function getSuperFormattedTimeStamp()
+    {
+        echo $this->format("d")
+            . "." . $this->format("m")
+            . "." . $this->format("Y")
+            . " в " . $this->format("H")
+            . ":" . $this->format("i")
+            . ":" . $this->format("s");
     }
 }

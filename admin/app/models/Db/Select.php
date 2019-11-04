@@ -13,6 +13,7 @@ class Select extends Query
     public $limit = null;
     public $order = null;
     public $order_type = "asc";
+    public $named_templates = [];
 
     public function __construct($table)
     {

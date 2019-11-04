@@ -4,6 +4,7 @@
 namespace admin\app\controllers;
 
 
+use admin\app\Factory;
 use PDO;
 
 class Db extends Controller
@@ -14,6 +15,11 @@ class Db extends Controller
     public static $options = [
         PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
     ];
+
+    public static function inst()
+    {
+        return Factory::getController("Db");
+    }
 
     public function __construct()
     {
@@ -39,5 +45,12 @@ class Db extends Controller
     public function query($sql_query)
     {
         return $this->PDO->query($sql_query);
+    }
+
+    public function safetyQuery($sql_query, $named_templates)
+    {
+        $sth = $this->PDO->prepare($sql_query);
+
+        return $sth->execute($named_templates);
     }
 }

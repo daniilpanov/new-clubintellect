@@ -43,7 +43,8 @@ $html_helper->begin("Система управления сайтом", "ru") //
     // стили
     ->link("style/style.css", "stylesheet")
     ->link("style/bootstrap.min.css", "stylesheet", null, "screen")
-    ->link("style/jquery.lightbox-0.5.css", "stylesheet", null, "screen");
+    ->link("style/jquery.lightbox-0.5.css", "stylesheet", null, "screen")
+    ->link("//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css", "stylesheet");
 // формируем <body>
 $html_helper->body()->header(function ()
     {

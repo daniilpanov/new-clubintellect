@@ -9,6 +9,7 @@ use admin\app\models\HTMLDocument;
 
 class HTMLHelper extends Controller
 {
+    /** @var $html_model HTMLDocument|null */
     private $html_model = null;
 
     public function begin($title, $lng): self
@@ -19,16 +20,21 @@ class HTMLHelper extends Controller
 
     public function head(): HTMLDocument
     {
-        return $this->html_model->createHead();
+        return $this->getDocModel()->createHead();
     }
 
     public function body(): HTMLDocument
     {
-        return $this->html_model->renderHead()->createBody();
+        return $this->getDocModel()->renderHead()->createBody();
     }
 
     public function end()
     {
-        $this->html_model->renderBody()->rendering();
+        $this->getDocModel()->renderBody()->rendering();
+    }
+
+    public function getDocModel(): HTMLDocument
+    {
+        return $this->html_model;
     }
 }

@@ -14,7 +14,7 @@ class Menu extends Model
     public $visibility;
     public $header_visibility;
     public $created;
-    public $last_mod;
+    public $lastmod;
     public $language;
 
     public function __construct($id, $lng, $select = "*")
